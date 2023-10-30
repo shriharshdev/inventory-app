@@ -1,6 +1,10 @@
 const Category = require("../models/category")
 const asyncHandler = require("express-async-handler")
 
+exports.index = asyncHandler(async (req, res, next) => {
+    res.send("NOT IMPLEMENTED: Site Home Page");
+  });
+
 exports.category_list = asyncHandler(async(req,res,next)=>{
     res.send("NOT IMPLEMENTED: category list")
 })
@@ -16,7 +20,7 @@ exports.category_create_post = asyncHandler(async(req,res,next)=>{
 exports.category_delete_get = asyncHandler(async(req,res,next)=>{
     res.send("NOT IMPLEMENTED: category delete GET")
 })
-exports.category_delete_get = asyncHandler(async(req,res,next)=>{
+exports.category_delete_post= asyncHandler(async(req,res,next)=>{
     res.send("NOT IMPLEMENTED: category create POST")
 })
 exports.category_update_get = asyncHandler(async(req,res,next)=>{

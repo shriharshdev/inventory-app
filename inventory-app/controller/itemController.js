@@ -16,7 +16,7 @@ exports.item_create_post = asyncHandler(async(req,res,next)=>{
 exports.item_delete_get = asyncHandler(async(req,res,next)=>{
     res.send("NOT IMPLEMENTED: Items delete GET")
 })
-exports.item_delete_get_post = asyncHandler(async(req,res,next)=>{
+exports.item_delete_post = asyncHandler(async(req,res,next)=>{
     res.send("NOT IMPLEMENTED: Items create POST")
 })
 exports.item_update_get = asyncHandler(async(req,res,next)=>{
