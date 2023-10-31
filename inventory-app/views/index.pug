@@ -1,5 +1,13 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to #{title}
+  h1= title 
+  p Welcome to #[strong Inventory App], a basic app to manage Inventory.
+
+  h1 Dynamic Content 
+
+  p The inventory has following records: 
+
+  ul 
+    li #[strong Items:] !{item_count}
+    li #[strong Categories:] !{category_count}

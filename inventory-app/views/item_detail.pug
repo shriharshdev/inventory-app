@@ -1,0 +1,12 @@
+extends layout
+
+block content
+  h1 #{item.name} 
+  p(style='margin-top:10px') #{item.description}
+  p #[strong Category:] 
+   each category, index in item.category 
+    a(href.category.url) #{category.name} 
+    if index < item.category.length-1 
+        |,
+  p #[strong Price:] #{item.price} 
+  p #[strong Stock:] #{item.stock}
