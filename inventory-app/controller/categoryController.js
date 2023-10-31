@@ -1,12 +1,28 @@
 const Category = require("../models/category")
+const Items = require('../models/items')
 const asyncHandler = require("express-async-handler")
 
 exports.index = asyncHandler(async (req, res, next) => {
-    res.send("NOT IMPLEMENTED: Site Home Page");
+    const[numItems, numCategories] = await Promise.all([
+        Category.countDocuments({}).exec(),
+        Items.countDocuments({}).exec(),
+    ])
+    res.render("index",{
+        title:"Inventory App Home",
+        item_count:numItems,
+        category_count:numCategories
+    })
   });
 
 exports.category_list = asyncHandler(async(req,res,next)=>{
-    res.send("NOT IMPLEMENTED: category list")
+    const allCategories = await Category.find({})
+    .sort({name:1})
+    .exec();
+
+    res.render("cat_list",{
+        title:"Category List",
+        cat_list:allCategories
+    })
 })
 exports.category_detail = asyncHandler(async(req,res,next)=>{
     res.send(`NOT IMPLEMENTED: category detail: ${req.params.id}`)

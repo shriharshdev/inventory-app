@@ -2,10 +2,30 @@ const Item = require("../models/items")
 const asyncHandler = require("express-async-handler")
 
 exports.item_list = asyncHandler(async(req,res,next)=>{
-    res.send("NOT IMPLEMENTED: Items list")
+
+    const allItems = await Item.find({},"name stock price")
+    .sort({price: 1})
+    .populate("category")
+    .exec();
+
+    res.render("item_list",{
+        title:"Items list",
+        item_list:allItems
+    })
 })
 exports.item_detail = asyncHandler(async(req,res,next)=>{
-    res.send(`NOT IMPLEMENTED: Items detail: ${req.params.id}`)
+    const item = await Item.findById(req.params.id).populate("category").exec()
+
+    if(item===null){
+        const err = new Error("Item not found")
+        err.status = 404;
+        return next(err)
+    }
+    res.render("item_detail",{
+        title:item.title,
+        item:item,
+    })
+    console.log(item)
 })
 exports.item_create_get = asyncHandler(async(req,res,next)=>{
     res.send("NOT IMPLEMENTED: Items create GET")
