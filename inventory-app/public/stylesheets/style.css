@@ -1,8 +1,20 @@
-body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+.body{
+  margin: 0px;
+  padding: 0px;
+}
+.nav-links {
+  list-style: none;
+  padding: 0px;
+  display: flex;
+  text-decoration: underline #007bff;
+  
+  justify-content: space-evenly;
 }
 
-a {
-  color: #00B7FF;
+.nav-links li a{
+  font-size: 25px;
+  padding: 3px;
+  background-color: black;
+  color: #007bff;
+  text-decoration: none;
 }

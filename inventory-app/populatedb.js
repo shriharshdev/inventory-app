@@ -57,8 +57,8 @@ Category.insertMany(categories)
   console.log('Categories saved successfully.');
 
   // Update the category references in the items
-  items.forEach((item) => {
-    item.category = savedCategories[0]._id;
+  items.forEach((item, index) => {
+    item.category = savedCategories[index]._id;
   });
 
   return Item.insertMany(items);
