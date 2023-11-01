@@ -1,12 +1,9 @@
 extends layout
 
 block content
-  h1 #{item.name} 
-  p(style='margin-top:10px') #{item.description}
-  p #[strong Category:] 
-   each category, index in item.category 
-    a(href.category.url) #{category.name} 
-    if index < item.category.length-1 
-        |,
-  p #[strong Price:] #{item.price} 
-  p #[strong Stock:] #{item.stock}
+  h1  #{itemDetails.name}
+  a(href=itemDetails.category.url) #{itemDetails.category.name}
+  h3  #[em Description: ] #{itemDetails.description}
+  h3  #[em Price: ] #{itemDetails.price}
+  h3  #[em Stock: ] #{itemDetails.stock}
+
