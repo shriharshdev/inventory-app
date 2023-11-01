@@ -26,10 +26,7 @@ function populateDatabase() {
       description: 'Electronic products category',
     }),
     // Add more categories as needed
-    new Category({
-        name:'Games',
-        description:'Electronic games company',
-    })
+  
   ];
 
   // Create and save sample items
@@ -41,13 +38,7 @@ function populateDatabase() {
       price: 599,
       stock: 100,
     }),
-    new Item({
-      name: 'GTA V',
-      description: 'Most advanced game in the history',
-      category: categories[1]._id, // Reference the first category
-      price: 599,
-      stock: 100,
-    }),
+
     // Add more items as needed
   ];
 
