@@ -1,0 +1,22 @@
+extends layout 
+
+block content
+    h1= title
+
+    p Do you really want to delete this category?
+
+    div(style="margin-left:20px;margin-top:20px")
+
+        p #[strong ID:] #{cats._id} 
+        p #[storng Title:] 
+            a(href=cats.url) #{cats.name}
+
+        form(action="", method="POST") 
+            div.form-group 
+                input#id.form-control(
+                    type='hidden',
+                    name="id",
+                    required="true",
+                    value= '_id'
+                )
+            button.btn.ntm-primary(type='submit') Delete

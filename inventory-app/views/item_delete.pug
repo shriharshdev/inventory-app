@@ -1,0 +1,62 @@
+//- extends layout 
+
+//- block content 
+//-     h1= title
+
+
+//-         p #[ Delete the following categories before deleting this item] 
+
+//-         div(style='margin-left:20px;margin-top:20px')
+
+//-         h4 Category
+
+
+//-         each category, index in items.categories
+//-              a(href=category.url) #{category.name}
+//-              if index < items.category.length-1
+//-                 |,
+//-                 h4 #{item.description}
+    
+//-         p Do you really want to delete the item  
+
+//-          form(action="", method="post") 
+//-             div.form-group 
+//-              input#itemid.form-control(
+//-                 type="hidden",
+//-                 name="itemid",
+//-                 required="true",
+//-                 value="item._id"
+//-              )
+//-              button.btn.ntm-primary(type='submit') Delete
+
+
+
+extends layout
+
+block content
+  h1= title
+
+  p #[ Delete the following categories before deleting this item]
+
+  div(style='margin-left:20px;margin-top:20px')
+
+  h4 Category
+
+  each category in items.category
+    a(href=category.url) #{category.name}
+    if index < items.category.length - 1
+      |,
+
+  h4 #{items.description}
+
+  p Do you really want to delete the item
+
+  form(action="", method="post")
+    div.form-group
+      input#itemid.form-control(
+        type='hidden',
+        name='itemid',
+        required='true',
+        value=items._id 
+      )
+    button.btn.ntm-primary(type='submit') Delete

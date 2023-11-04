@@ -2,8 +2,14 @@ extends layout
 
 block content
   h1  #{itemDetails.name}
-  a(href=itemDetails.category.url) #{itemDetails.category.name}
-  h3  #[em Description: ] #{itemDetails.description}
-  h3  #[em Price: ] #{itemDetails.price}
-  h3  #[em Stock: ] #{itemDetails.stock}
+  h4  #[strong Category: ]  
+      each category, index in itemDetails.category 
+        a(href=category.url) #{category.name}
+  h4  #[strong Description: ] #{itemDetails.description}
+  h4  #[strong Price: ] #{itemDetails.price}
+  h4  #[strong Stock: ] #{itemDetails.stock}
+
+  hr
+  p
+  a(href=itemDetails.url+'/delete') Delete Item
 
