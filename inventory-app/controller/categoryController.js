@@ -100,8 +100,51 @@ exports.category_delete_post= asyncHandler(async(req,res,next)=>{
      res.redirect("/catalog/categories")
 })
 exports.category_update_get = asyncHandler(async(req,res,next)=>{
-    res.send("NOT IMPLEMENTED: category update GET")
+    const category = await Category.findById(req.params.id).exec()
+
+    if(category===null){
+        const err = new Error("Category not found");
+        err.status=404;
+        return next(err)
+    }
+    res.render("cat_form",{
+        title:"Update Category",
+        category:category,
+    })
 })
-exports.category_update_post = asyncHandler(async(req,res,next)=>{
-    res.send("NOT IMPLEMENTED: category update POST")
-})
+exports.category_update_post = [
+    body("name", "Category name required")
+    .trim()
+    .isLength({min:1}),
+    body("description","Description required")
+    .trim()
+    .isLength({min:1}),
+
+    asyncHandler(async(req,res,next)=>{
+        const errors = validationResult(req);
+        
+        const category = new Category({
+            name:req.body.name,
+            description:req.body.description,
+            _id:req.params.id,
+        })
+        if(!errors.isEmpty()){
+            res.render("cat_form",{
+                title:"Update Category",
+                category:category,
+                errors:errors.array()
+            })
+            return;
+        } else {
+            const catExists = await Category.findOne({name:req.body.name})
+                .collation({locale:"en",strength:2})
+                .exec();
+                if(catExists){
+                    res.redirect(catExists.url)
+                } else {
+                    const updateCat = await Category.findByIdAndUpdate(req.params.id, category, {})
+                    res.redirect(updateCat.url)
+                }
+        }
+    })
+]

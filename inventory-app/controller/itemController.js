@@ -139,8 +139,88 @@ exports.item_delete_post = asyncHandler(async(req,res,next)=>{
 
 
 exports.item_update_get = asyncHandler(async(req,res,next)=>{
-    res.send("NOT IMPLEMENTED: Items update GET")
+    const [item, allCategories] = await Promise.all([
+      Item.findById(req.params.id).populate("category").exec(),
+      Category.find({},"name").exec()
+    ])
+    if(item===null){
+      const err = new Error("Item not found");
+      err.status=404
+      return next(err)
+    }
+    for (const category of allCategories){
+      for(const item_c of item.category){ 
+        if(category._id.toString()===item_c._id.toString()){
+          category.checked='true'
+        }
+      }
+    }
+    res.render("item_form",{
+      title:"Update Item",
+      item:item,
+      categories:allCategories
+    })
 })
-exports.item_update_post = asyncHandler(async(req,res,next)=>{
-    res.send("NOT IMPLEMENTED: Items update POST")
-})
+exports.item_update_post = [
+  (req,res,next)=>{
+    if(!(req.body.category instanceof Array)){
+      if(typeof req.body.category === 'undefined') req.body.category=[]
+    }else{
+      req.body.category = new Array(req.body.category)
+    }
+    next();
+  },
+
+  body("name", "Name must not be empty.")
+  .trim()
+  .isLength({ min: 1 })
+  .escape(),
+  body("description", "Description required")
+  .trim()
+  .isLength({ min: 1 }),
+  body("category", "Must choose at least one category"),
+  body("price")
+  .trim()
+  .isLength({ min: 1 })
+  .withMessage("Price required")
+  .isCurrency({ allow_negatives: false })
+  .withMessage("Price must be a positive number")
+  .isCurrency({ require_decimal: false, digits_after_decimal: [0] })
+  .withMessage("Price must be a whole number and not in decimals"),
+  body("stock")
+  .trim()
+  .isInt({ min: 0 })
+  .withMessage("Minimum quantity of 0")
+  .isInt({ max: 100 })
+  .withMessage("Maximum quantity of 100"),
+
+  asyncHandler(async(req,res,next)=>{
+    const errors = validationResult(req)
+
+    const item = new Item({
+        name: req.body.name,
+        description: req.body.description,
+        category: typeof req.body.category === "undefined" ? [] : req.body.category,
+        price: req.body.price,
+        stock: req.body.stock,
+        _id:req.params.id,
+    })
+    if(!errors.isEmpty()){
+      const allCategories = await Category.find({},"name").exec()
+      for(const category of allCategories){
+        if(item.category.includes(category._id)){
+          category.checked="true";
+        }
+      }
+      res.render("item_form",{
+        title:"Update item",
+        categories:allCategories,
+        item:item,
+        errors:errors.array()
+      })
+    } else {
+      const updateItem = await Item.findByIdAndUpdate(req.params.id,item,{})
+      res.redirect(updateItem.url)
+    }
+  })
+]
